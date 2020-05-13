@@ -14,11 +14,17 @@ def start(update, context):
         text=missatge
         
     )
-    
+
 def help(update, context):
     context.bot.send_message(
         chat_id=update.effective_chat.id,
         text="Soc un bot amb comandes /start i /help.")
+
+def author(update, context):
+    context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text = "Daniel Losada Molina. \n daniel.losada.molina@est.fib.upc.edu"
+    )
 
 # declara una constant amb el access token que llegeix de token.txt
 TOKEN = open('token.txt').read().strip()
@@ -30,6 +36,8 @@ dispatcher = updater.dispatcher
 # indica que quan el bot rebi la comanda /start s'executi la funció start
 dispatcher.add_handler(CommandHandler('start', start))
 dispatcher.add_handler(CommandHandler('help', help))
+dispatcher.add_handler(CommandHandler('author', author))
+
 
 
 # engega el bot
