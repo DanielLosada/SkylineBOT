@@ -2,6 +2,11 @@
 import telegram
 from telegram.ext import Updater, Filters
 from telegram.ext import Updater, CommandHandler
+from skyline import Skyline
+
+skylines = {
+    
+}
 
 # defineix una funció que saluda i que s'executarà quan el bot rebi el missatge /start
 def start(update, context):
@@ -16,6 +21,12 @@ def start(update, context):
     )
 
 def help(update, context):
+    r1 = Skyline()
+    r1.generarFigura()
+    context.bot.send_photo(
+        chat_id=update.effective_chat.id,
+        photo=open("Skyline.png", "rb")
+    )
     context.bot.send_message(
         chat_id=update.effective_chat.id,
         text="Soc un bot amb comandes /start i /help.")
