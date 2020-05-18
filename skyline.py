@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import random
 
 def takeFirst(elem):
     return elem[0]
@@ -12,6 +13,25 @@ class Skyline:
     def ordenaPlots(self):
         self.plots.sort(key=takeFirst)
         
+    def creacioEdificiSimple(self,plot): #plot -> (xmin,alçada,xmax)
+        self.plots = [plot]
+    
+    def creacioEdificiCompostos(self, plots): #plots -> [(xmin,alçada,xmax),(xmin,alçada,xmax),...]
+        self.plots = plots
+        self.ordenaPlots()
+        
+    def creacioEdificiAleatori(self,plot): #plot -> {n,h,w,xmin,xmax} n = nombre edificis, h = alçada aleatoria entre 0 i h, w = amblada aleatoria entre 1 i w, xmin i xmax -> posicions inici entre xmin i xmax
+        n = plot['n']
+        h = plot['h']
+        w = plot['w']
+        xmin = plot['xmin']
+        xmax = plot['xmax']
+        res = []
+        for x in range(0,n):
+            res = res + [(,randint(0,h+1),)]
+
+
+
 
     def generarFigura(self):
         
