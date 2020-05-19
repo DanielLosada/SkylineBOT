@@ -28,7 +28,7 @@ class Skyline:
         xmin = plot['xmin']
         xmax = plot['xmax']
         res = []
-        for x in range(0,n):
+        for _ in range(n):
             min = rand.randint(xmin,xmax)
             max = xmax
             if(min + w <= xmax):
