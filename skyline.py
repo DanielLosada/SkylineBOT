@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-import random
+import random as rand
 
 def takeFirst(elem):
     return elem[0]
@@ -28,8 +28,10 @@ class Skyline:
         xmax = plot['xmax']
         res = []
         for x in range(0,n):
-            res = res + [(,randint(0,h+1),)]
-
+            min = rand.randint(xmin,xmax)
+            max = rand.randint(min, min + w)
+            res = res + [(min,rand.randint(0,h),max)]
+        self.plots = res
 
 
 
