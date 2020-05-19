@@ -104,5 +104,8 @@ class Skyline:
         self.plots = self.plots + ret
         
     
-    def desplacamentEdificis(self, num):
+    def desplacamentEdificisDreta(self, num):
         self.plots = list(map(lambda elem: (elem[0]+num,elem[1], elem[2]+num), self.plots))
+
+    def desplacamentEdificisEsquerra(self, num):
+        self.plots = list(map(lambda elem: (elem[0]-num,elem[1], elem[2]-num), self.plots))
