@@ -4,6 +4,7 @@ import random as rand
 def takeFirst(elem):
     return elem[0]
 
+
 class Skyline:
     nom = "1"
     plots = [(1,2,3), (3,4,6)]
@@ -102,3 +103,6 @@ class Skyline:
                 ret = ret + [(y[0]+(amplada*x), y[1],y[2]+(amplada*x))]
         self.plots = self.plots + ret
         
+    
+    def desplacamentEdificis(self, num):
+        self.plots = list(map(lambda elem: (elem[0]+num,elem[1], elem[2]+num), self.plots))
