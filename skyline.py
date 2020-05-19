@@ -29,9 +29,12 @@ class Skyline:
         res = []
         for x in range(0,n):
             min = rand.randint(xmin,xmax)
-            max = rand.randint(min, min + w)
+            max = xmax
+            if(min + w <= xmax):
+                max = rand.randint(min, min + w)
             res = res + [(min,rand.randint(0,h),max)]
         self.plots = res
+        self.ordenaPlots()
 
 
 
