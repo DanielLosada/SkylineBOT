@@ -4,12 +4,62 @@ import random as rand
 def takeFirst(elem):
     return elem[0]
 
+def edificiDins(edi1, edi2):
+    if edi1[0] >= edi2[0] and edi1[1] <= edi2[1] and edi1[2] <= edi2[2]:#vol dir que edi1 és contingut d'edi2
+        return 1 
+    elif edi1[0] <= edi2[0] and edi1[1] >= edi2[1] and edi1[2] >= edi2[2]:#edi2 contingut a edi1
+        return 2
+    else:
+        return 3 # no estan continguts
+
 
 class Skyline:
     nom = "1"
-    plots = [(1,2,3), (3,4,6)]
+    plots = []
 
-   
+    def __init__(self,plot):
+        self.plots = plot
+
+
+    def eliminaPlotsSenseVolum(self):
+        length = len(self.plots)
+        x = 0
+        while x < length:
+            if self.plots[x][0] == self.plots[x][2] or self.plots[x][1] == 0:
+                self.plots.remove(self.plots[x])
+                length = length - 1
+                x = x-1
+            x = x+1
+
+#per a que funcioni els edificis han d'estar ordenats en ordre creixent de posicio inicial
+    def plotsNoSolapats(self):
+        length = len(self.plots)
+        x = 0
+        while x < length-1:
+            if(self.plots[x][0]>=self.plots[x][2]):
+                self.plots.remove(self.plots[x])
+                length = length-1
+                x = x-2
+            else:
+                aux=edificiDins(self.plots[x],self.plots[x+1])
+                if aux == 1 or aux == 2:
+                    if aux == 1:
+                        self.plots.remove(self.plots[x])
+                    else:
+                        self.plots.remove(self.plots[x+1])
+                    length = length -1
+                    x = x -2
+                elif self.plots[x][2] > self.plots[x+1][0]:
+                    if self.plots[x][1] <= self.plots[x+1][1]:
+                        self.plots[x] = list(self.plots[x])
+                        self.plots[x][2] = self.plots[x+1][0]
+                        self.plots[x] = tuple(self.plots[x])
+                    else:
+                        self.plots[x+1]= list(self.plots[x+1])
+                        self.plots[x+1][0] = self.plots[x][2]
+                        self.plots[x+1] = tuple(self.plots[x+1])
+            x = x + 1
+                        
 
     def ordenaPlots(self):
         self.plots.sort(key=takeFirst)
@@ -32,11 +82,12 @@ class Skyline:
             min = rand.randint(xmin,xmax)
             max = xmax
             if(min + w <= xmax):
-                max = rand.randint(min, min + w)
+                max = rand.randint(min+1, min + w)
             res = res + [(min,rand.randint(0,h),max)]
         self.plots = res
         self.ordenaPlots()
 
+    
 
 
     def generarFigura(self):
@@ -109,3 +160,8 @@ class Skyline:
 
     def desplacamentEdificisEsquerra(self, num):
         self.plots = list(map(lambda elem: (elem[0]-num,elem[1], elem[2]-num), self.plots))
+
+
+sky = Skyline([(1, 6, 3), (1, 12, 3), (1, 20, 3), (1, 13, 3), (1, 11, 3), (1, 7, 3), (2, 5, 3), (2, 12, 3), (2, 12, 3), (3, 20, 3), (3, 9, 3), (3, 18, 3)])
+
+sky.eliminaPlotsSenseVolum()
