@@ -13,6 +13,8 @@ def edificiDins(edi1, edi2):
         return 3 # no estan continguts
 
 
+
+
 class Skyline:
     nom = "1"
     plots = []
@@ -31,6 +33,18 @@ class Skyline:
                 x = x-1
             x = x+1
 
+    def reordena(self,elem,index):
+        insertat = False
+        length = len(self.plots)
+        while not insertat:
+            if index == length:
+                insertat = True
+                self.plots.insert(index,elem)
+            elif self.plots[index][0]>=elem[0]:
+                insertat = True
+                self.plots.insert(index,elem)
+            index = index +1
+
 #per a que funcioni els edificis han d'estar ordenats en ordre creixent de posicio inicial
     def plotsNoSolapats(self):
         length = len(self.plots)
@@ -40,24 +54,40 @@ class Skyline:
                 self.plots.remove(self.plots[x])
                 length = length-1
                 x = x-2
+                if x < -1:
+                    x = -1
             else:
                 aux=edificiDins(self.plots[x],self.plots[x+1])
                 if aux == 1 or aux == 2:
                     if aux == 1:
                         self.plots.remove(self.plots[x])
+                        x = x - 2
+                        if x < -1:
+                            x = -1
                     else:
                         self.plots.remove(self.plots[x+1])
+                        x = x-1
                     length = length -1
-                    x = x -2
+                    
                 elif self.plots[x][2] > self.plots[x+1][0]:
-                    if self.plots[x][1] <= self.plots[x+1][1]:
+                    if self.plots[x][1] <= self.plots[x+1][1]:#puede provocar min>max asi que hay que eliminarlo
                         self.plots[x] = list(self.plots[x])
                         self.plots[x][2] = self.plots[x+1][0]
                         self.plots[x] = tuple(self.plots[x])
-                    else:
+                        if(self.plots[x][0]>=self.plots[x][2]):
+                            self.plots.remove(self.plots[x])
+                            length = length-1
+                            x = x-2
+                            if x < -1:
+                                x = -1
+                    else:#como mueve la posucion inicial puede provocar que dejen de estar ordenados
                         self.plots[x+1]= list(self.plots[x+1])
                         self.plots[x+1][0] = self.plots[x][2]
                         self.plots[x+1] = tuple(self.plots[x+1])
+                        if self.plots[x][0] > self.plots[x+1][0]:
+                            aux = self.plots[x]
+                            self.plots.remove(aux)
+                            self.reordena(aux, x)
             x = x + 1
                         
 
@@ -162,6 +192,11 @@ class Skyline:
         self.plots = list(map(lambda elem: (elem[0]-num,elem[1], elem[2]-num), self.plots))
 
 
-sky = Skyline([(1, 6, 3), (1, 12, 3), (1, 20, 3), (1, 13, 3), (1, 11, 3), (1, 7, 3), (2, 5, 3), (2, 12, 3), (2, 12, 3), (3, 20, 3), (3, 9, 3), (3, 18, 3)])
+#sky = Skyline([])
+#sky.creacioEdificiAleatori({"n": 10, "h": 20, "w": 3, "xmin": 1, "xmax": 10})
 
-sky.eliminaPlotsSenseVolum()
+#sky = Skyline([(1,13,2),(1,6,4),(1,8,3)])
+
+
+#sky.eliminaPlotsSenseVolum()
+#sky.plotsNoSolapats()
