@@ -90,7 +90,7 @@ class Skyline:
                             self.plots.remove(aux)
                             self.reordena(aux, x)
                     
-                if x < length-1 and self.plots[x][1] == self.plots[x+1][1]:#en cas de que dos edifici tinguin la mateixa alçada despres de dessolaparlos es fusionen
+                if x < length-1 and self.plots[x][1] == self.plots[x+1][1] and self.plots[x][2] == self.plots[x+1][0]:#en cas de que dos edifici tinguin la mateixa alçada despres de dessolaparlos es fusionen
                     edificiFusionat = (self.plots[x][0],self.plots[x][1],self.plots[x+1][2])
                     self.plots.remove(self.plots[x+1])
                     self.plots.remove(self.plots[x])

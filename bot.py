@@ -21,8 +21,6 @@ def start(update, context):
     )
 
 def help(update, context):
-    r1 = Skyline()
-    r1.generarFigura()
     context.bot.send_photo(
         chat_id=update.effective_chat.id,
         photo=open("Skyline.png", "rb")
