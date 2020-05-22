@@ -47,6 +47,7 @@ class Skyline:
 
 #per a que funcioni els edificis han d'estar ordenats en ordre creixent de posicio inicial
     def plotsNoSolapats(self):
+        self.eliminaPlotsSenseVolum()
         length = len(self.plots)
         x = 0
         while x < length-1:
@@ -69,7 +70,7 @@ class Skyline:
                         x = x-1
                     length = length -1
                     
-                elif self.plots[x][2] > self.plots[x+1][0]:
+                elif self.plots[x][2] > self.plots[x+1][0]:#edificis solapats
                     if self.plots[x][1] <= self.plots[x+1][1]:#puede provocar min>max asi que hay que eliminarlo
                         self.plots[x] = list(self.plots[x])
                         self.plots[x][2] = self.plots[x+1][0]
@@ -88,6 +89,14 @@ class Skyline:
                             aux = self.plots[x]
                             self.plots.remove(aux)
                             self.reordena(aux, x)
+                    
+                if x < length-1 and self.plots[x][1] == self.plots[x+1][1]:#en cas de que dos edifici tinguin la mateixa alçada despres de dessolaparlos es fusionen
+                    edificiFusionat = (self.plots[x][0],self.plots[x][1],self.plots[x+1][2])
+                    self.plots.remove(self.plots[x+1])
+                    self.plots.remove(self.plots[x])
+                    self.plots.insert(x,edificiFusionat)
+                    length = length-1
+                    x = x-1
             x = x + 1
                         
 
