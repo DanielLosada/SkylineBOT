@@ -115,7 +115,7 @@ class Skyline:
         while x < length1 and y < length2:
             if self.plots[x][0] < sky2[y][0]:#si l'edifici de més a l'esquerra és del primer skyline
                 primer = self.plots[x]
-                if sky2[y][0] >= primer[0] and sky2[y][0] <= primer[2]: #estan solapats
+                if sky2[y][0] >= primer[0] and sky2[y][0] < primer[2]: #estan solapats
                     edificiAfegir = (sky2[y][0],min(sky2[y][1],primer[1]),min(sky2[y][2],primer[2]))
                     res = res + [edificiAfegir]
                     auxx = x
@@ -123,16 +123,20 @@ class Skyline:
                         x = x+1
                     if auxx+1 >= length1 or (not esSolapen(self.plots[auxx+1],sky2[y])):
                         y = y+1
+                else:
+                    x = x+1
             else:
                 primer = sky2[y]
-                if self.plots[x][0] >= primer[0] and self.plots[x][0] <= primer[2]: #estan solapats
+                if self.plots[x][0] >= primer[0] and self.plots[x][0] < primer[2]: #estan solapats
                     edificiAfegir = (self.plots[x][0],min(self.plots[x][1],primer[1]),min(self.plots[x][2],primer[2]))
                     res = res + [edificiAfegir]
                     auxy = y
-                if x+1 >= length1 or (not esSolapen(primer, self.plots[x+1])):#si no es solapa amb el seguent 
+                    if x+1 >= length1 or (not esSolapen(primer, self.plots[x+1])):#si no es solapa amb el seguent 
+                        y = y+1
+                    if auxy+1 >= length2 or  (not esSolapen(sky2[auxy+1],self.plots[x])):
+                        x = x+1
+                else:
                     y = y+1
-                if auxy+1 >= length2 or  (not esSolapen(sky2[auxy+1],self.plots[x])):
-                    x = x+1
         self.plots = res
             
 
@@ -240,8 +244,8 @@ class Skyline:
 #sky = Skyline([])
 #sky.creacioEdificiAleatori({"n": 10, "h": 20, "w": 3, "xmin": 1, "xmax": 10})
 
-sky = Skyline([(1,2,3),(3,4,5),(5,1,6)])
-sky.interseccio([(2,3,4),(4,2,7)])
+sky = Skyline([(3, 3, 5), (5, 18, 6), (7, 8, 8), (10, 8, 11), (12, 4, 13), (14, 4, 15), (15, 19, 18), (18, 10, 20), (20, 1, 21), (21, 11, 24), (24, 19, 25), (25, 17, 28), (34, 15, 37), (38, 10, 39), (43, 12, 45), (45, 16, 47), (47, 14, 48), (51, 2, 52), (52, 15, 55), (55, 13, 56), (56, 8, 57), (62, 14, 63), (65, 17, 68), (68, 10, 69), (69, 11, 72), (72, 18, 74), (74, 3, 75), (77, 15, 79), (80, 17, 83), (89, 14, 91), (91, 20, 94), (94, 5, 96), (96, 6, 99)])
+sky.interseccio([(2, 7, 3), (3, 13, 5), (7, 18, 9), (10, 14, 13), (13, 7, 14), (21, 11, 22), (22, 17, 23), (28, 17, 30), (34, 18, 36), (37, 15, 39), (39, 16, 41), (47, 5, 48), (48, 10, 51), (58, 16, 59), (59, 18, 60), (62, 14, 65), (75, 10, 76), (76, 18, 78), (78, 20, 80), (80, 5, 81), (81, 14, 84), (85, 18, 88), (88, 14, 90), (92, 11, 93), (95, 7, 96), (98, 13, 100)])
 
 #sky.eliminaPlotsSenseVolum()
 #sky.plotsNoSolapats()
