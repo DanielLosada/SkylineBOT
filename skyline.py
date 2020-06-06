@@ -28,6 +28,7 @@ class Skyline:
 
     def __init__(self,plot):
         self.plots = plot
+        self.calculaAreaSkyline()
 
 
     def eliminaPlotsSenseVolum(self):
