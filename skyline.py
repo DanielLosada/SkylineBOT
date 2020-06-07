@@ -176,6 +176,7 @@ class Skyline:
             res = res + [(min,rand.randint(0,h),max)]
         self.plots = res
         self.ordenaPlots()
+        self.plotsNoSolapats()
 
     
 
@@ -191,12 +192,16 @@ class Skyline:
         #plt.show()
 
     def unio(self, a):
+        self.plots = self.plots + a
+        self.ordenaPlots()
+        self.plotsNoSolapats()
+        '''
         height = [x[1] for x in self.plots] + [x[1] for x in a]
         width = [x[2]-x[0] for x in self.plots] + [x[2]-x[0] for x in a]
         pos = [((x[2]-x[0])/2)+x[0] for x in self.plots] + [((x[2]-x[0])/2)+x[0] for x in a]
         plt.bar(pos,height,width=width)
         plt.show()
-        
+        '''
         '''
         height1 = [x[1] for x in self.plots]
         height2 = [x[1] for x in a]
