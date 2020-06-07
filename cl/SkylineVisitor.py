@@ -44,11 +44,6 @@ class SkylineVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by SkylineParser#operator.
-    def visitOperator(self, ctx:SkylineParser.OperatorContext):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by SkylineParser#skyline.
     def visitSkyline(self, ctx:SkylineParser.SkylineContext):
         return self.visitChildren(ctx)
