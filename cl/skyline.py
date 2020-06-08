@@ -38,7 +38,6 @@ class Skyline:
 
     def __init__(self, plot):
         self.plots = plot
-        # self.calculaAreaSkyline()
 
     def eliminaPlotsSenseVolum(self):
         length = len(self.plots)
@@ -56,10 +55,10 @@ class Skyline:
             amplada = x[2] - x[0]
             area = amplada * x[1]
             ret = ret + area
-        self.area = ret
+        self.area = int(ret)
 
     def calculaAlçadaMax(self):
-        self.alcada = max(self.plots, key=takeSecond)[1]
+        self.alcada = int(max(self.plots, key=takeSecond)[1])
 
     def reordena(self, elem, index):
         insertat = False
@@ -196,6 +195,7 @@ class Skyline:
     def creacioEdificiCompostos(self, plots):
         self.plots = plots
         self.ordenaPlots()
+        self.plotsNoSolapats()
 
     # plot -> {n,h,w,xmin,xmax} n = nombre edificis,
     # h = alçada aleatoria entre 0 i h,
@@ -219,7 +219,6 @@ class Skyline:
         self.plots = res
         self.ordenaPlots()
         self.plotsNoSolapats()
-        print(self.plots)
 
     def generarFigura(self):
         height = [x[1] for x in self.plots]
