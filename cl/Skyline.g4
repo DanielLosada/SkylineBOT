@@ -4,8 +4,6 @@ root: expr EOF;
 
 expr: exprovar | creaoskyline;
 
-variable: VAR ':=' crea | VAR ':=' skylineope; 
-
 exprovar: VAR ':=' VAR
         |VAR ':=' creaoskyline;
         

@@ -10,9 +10,6 @@ from antlr4 import *
 from cl.SkylineLexer import SkylineLexer
 from cl.SkylineParser import SkylineParser
 
-skylines = {
-    
-}
 
 # defineix una funció que saluda i que s'executarà quan el bot rebi el missatge /start
 def start(update, context):
@@ -49,7 +46,7 @@ def visitor(update, context):
     parser = SkylineParser(token_stream)
     tree = parser.root()
 
-    visitor = EvalVisitor()
+    visitor = EvalVisitor(context.user_data)
     sky = visitor.visit(tree)
     sky.generarFigura()
     context.bot.send_photo(
@@ -60,12 +57,49 @@ def visitor(update, context):
     sky.calculaAlçadaMax()
     context.bot.send_message(
         chat_id=update.effective_chat.id,
-        text = "Àrea: " + str(sky.area)
+        text = "Àrea: " + str(sky.area) + '\n' + "Alçada: " + str(sky.alcada)
     )
+    
+
+def save(update, context):
+    arg = str(context.args[0])
+    idSky = context.user_data[arg]
+    nomfile = arg + '.sky'
+    fi = open(nomfile, 'wb')
+    pickle.dump(idSky, fi)
+    fi.close()
     context.bot.send_message(
         chat_id=update.effective_chat.id,
-        text = "Alçada: " + str(sky.alcada)
+        text = "Skyline guardat!"
     )
+
+def load(update, context):
+    arg = str(context.args[0])
+    nomfile = arg + '.sky'
+    fi = open(nomfile, 'rb')
+    var = pickle.load(fi)
+    context.user_data[arg] = var
+    fi.close()
+    context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text = "Skyline carregat!"
+    )
+
+def clean(update, context):
+    context.user_data.clear()
+    context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text = "Identificadors esborrats!"
+    )
+
+def lst(update,context):
+    keysDic = context.user_data.keys()
+    for x in keysDic:
+        missatge = 'Identificador: ' + str(x) + '   Àrea: ' + str(context.user_data[str(x)].area)
+        context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text = missatge
+        )
 
 # declara una constant amb el access token que llegeix de token.txt
 TOKEN = open('token.txt').read().strip()
@@ -78,54 +112,13 @@ dispatcher = updater.dispatcher
 dispatcher.add_handler(CommandHandler('start', start))
 dispatcher.add_handler(CommandHandler('help', help))
 dispatcher.add_handler(CommandHandler('author', author))
+dispatcher.add_handler(CommandHandler('save', save))
+dispatcher.add_handler(CommandHandler('load', load))
+dispatcher.add_handler(CommandHandler('clean', clean))
+dispatcher.add_handler(CommandHandler('lst', lst))
 dispatcher.add_handler(MessageHandler(Filters.text, visitor))
 
 
 
 # engega el bot
 updater.start_polling()
-
-
-'''
-import telegram
-from telegram.ext import Updater, Filters
-from telegram.ext import CommandHandler, MessageHandler
-
-#t.me/DanLMBOT
-
-def start(bot, update): #(bot,callbackquery)
-    botname = bot.username
-    username = update.message.chat.first_name
-    missatge = "Hola %s, soc en %s" % (username, botname)
-    bot.send_message(chat_id=update.message.chat_id, text=missatge)
-    print("Start command")
-
-
-def help(update, context):
-    context.bot.send_message(
-        chat_id=update.effective_chat.id,
-        text="Soc un bot amb comandes /start, /help i /hora.")
-
-
-
-TOKEN = open('token.txt').read().strip()
-updater = Updater(token=TOKEN)
-dispatcher = updater.dispatcher
-
-dispatcher.add_handler(CommandHandler('start', start))
-dispatcher.add_handler(CommandHandler('help', help))
-
-#dispatcher.add_handler(CommandHandler('help', help))
-#dispatcher.add_handler(CommandHandler('author', author))
-#dispatcher.add_handler(CommandHandler('lst', lst))
-#dispatcher.add_handler(CommandHandler('clean', clean))
-#dispatcher.add_handler(CommandHandler('save id', saveId))
-#dispatcher.add_handler(CommandHandler('load id', loadId))
-
-#dispatcher.add_handler(
-#    MessageHandler(
- #       getLocation
-#        ))
-
-updater.start_polling()
-'''

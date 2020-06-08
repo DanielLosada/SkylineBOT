@@ -12,6 +12,6 @@ token_stream = CommonTokenStream(lexer)
 parser = SkylineParser(token_stream)
 tree = parser.root()
 
-
-visitor = EvalVisitor()
+a = {}
+visitor = EvalVisitor(a)
 visitor.visit(tree)

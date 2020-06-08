@@ -19,11 +19,6 @@ class SkylineVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by SkylineParser#variable.
-    def visitVariable(self, ctx:SkylineParser.VariableContext):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by SkylineParser#exprovar.
     def visitExprovar(self, ctx:SkylineParser.ExprovarContext):
         return self.visitChildren(ctx)

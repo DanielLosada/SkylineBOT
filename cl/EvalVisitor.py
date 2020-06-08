@@ -1,7 +1,5 @@
 # from skyline import Skyline
 from antlr4 import *
-import sys
-sys.path.insert(1, '../')
 import skyline
 
 
@@ -15,8 +13,8 @@ else:
 
 class EvalVisitor(SkylineVisitor):
 
-    def __init__(self):
-        self.nivell = 0
+    def __init__(self, userData):
+        self.dic = userData
 
     def visitRoot(self, ctx: SkylineParser.RootContext):
         n = next(ctx.getChildren())
@@ -28,7 +26,12 @@ class EvalVisitor(SkylineVisitor):
 
     def visitExprovar(self, ctx: SkylineParser.ExprovarContext):
         l = [n for n in ctx.getChildren()]
-        a = self.visit(l[2])
+        if ctx.creaoskyline():
+            a = self.visit(l[2])
+            self.dic[str(l[0])] = a
+        else:
+            self.dic[str(l[0])] = self.dic[str(l[2])]
+            a = self.dic[str(l[0])]
         return a
 
     def visitCreaoskyline(self, ctx: SkylineParser.CreaoskylineContext):
@@ -72,6 +75,8 @@ class EvalVisitor(SkylineVisitor):
 
     def visitSkyline(self, ctx: SkylineParser.SkylineContext):
         n = next(ctx.getChildren())
+        if ctx.VAR():
+            return self.dic[str(ctx.VAR().getText())]
         return self.visit(n)
 
     def visitSkylineope(self, ctx: SkylineParser.SkylineopeContext):
@@ -105,32 +110,3 @@ class EvalVisitor(SkylineVisitor):
                     else:
                         sky.desplacamentEdificisEsquerra(num)
                     return sky
-
-            '''
-        elif len(l) == 3:
-            print("hi ha 3")
-            if str(next(ctx.getChildren())) == '(':
-                print('operacio entre parentesis')
-            else:
-                if ctx.skyline(): #en cas que hi hagi algun skyline
-                    if ctx.skylineope():
-                        sky1 = self.visit(l[0])
-                        sky2 = self.visit(ctx.skylineope(0))
-                        print(sky2.plots)
-                        print('skyline op skylineope')
-                        if str(l[1]) == '*': #interseccio d'skylines
-                            sky1.interseccio(sky2.plots)
-                        elif str(l[1]) == '+':
-                            sky1.unio(sky2.plots)
-                        return sky1
-                    elif ctx.NUM():
-                        print('skyline op NUM')
-                        sky1 = self.visit(l[0])
-
-                    else:
-                        print('skyline op skyline')
-                    #l2 = [n for n in ctx.skyline()]
-                    #if(len(l2) == 2): #vol dir que hi ha skyline op skyline
-                    #    print('skyline op skyline')
-
-'''
