@@ -270,12 +270,3 @@ class Skyline:
 
     def desplacamentEdificisEsquerra(self, n):
         self.plots = list(map(lambda e: (e[0]-n, e[1], e[2]-n), self.plots))
-
-
-sky = Skyline([])
-sky.creacioEdificiAleatori({"n": 4, "h": 10,"w": 4, "xmin": 0,"xmax": 10})
-# sky.calculaAreaSkyline()
-# sky.creacioEdificiAleatori({"n": 10, "h": 20, "w": 3, "xmin": 1, "xmax": 10})
-
-# sky.eliminaPlotsSenseVolum()
-# sky.plotsNoSolapats()
