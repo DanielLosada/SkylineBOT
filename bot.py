@@ -1,8 +1,14 @@
 # importa l'API de Telegram
 import telegram
 from telegram.ext import Updater, Filters
-from telegram.ext import Updater, CommandHandler
+from telegram.ext import Updater, CommandHandler, MessageHandler
 from skyline import Skyline
+import pickle
+from cl.EvalVisitor import EvalVisitor
+import sys
+from antlr4 import *
+from cl.SkylineLexer import SkylineLexer
+from cl.SkylineParser import SkylineParser
 
 skylines = {
     
@@ -35,6 +41,32 @@ def author(update, context):
         text = "Daniel Losada Molina. \n daniel.losada.molina@est.fib.upc.edu"
     )
 
+def visitor(update, context):
+    input_stream = InputStream(update.message.text)
+
+    lexer = SkylineLexer(input_stream)
+    token_stream = CommonTokenStream(lexer)
+    parser = SkylineParser(token_stream)
+    tree = parser.root()
+
+    visitor = EvalVisitor()
+    sky = visitor.visit(tree)
+    sky.generarFigura()
+    context.bot.send_photo(
+        chat_id=update.effective_chat.id,
+        photo=open("Skyline.png", "rb")
+    )
+    sky.calculaAreaSkyline()
+    sky.calculaAlçadaMax()
+    context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text = "Àrea: " + str(sky.area)
+    )
+    context.bot.send_message(
+        chat_id=update.effective_chat.id,
+        text = "Alçada: " + str(sky.alcada)
+    )
+
 # declara una constant amb el access token que llegeix de token.txt
 TOKEN = open('token.txt').read().strip()
 
@@ -46,6 +78,7 @@ dispatcher = updater.dispatcher
 dispatcher.add_handler(CommandHandler('start', start))
 dispatcher.add_handler(CommandHandler('help', help))
 dispatcher.add_handler(CommandHandler('author', author))
+dispatcher.add_handler(MessageHandler(Filters.text, visitor))
 
 
 

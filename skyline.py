@@ -5,6 +5,9 @@ import random as rand
 def takeFirst(elem):
     return elem[0]
 
+def takeSecond(elem):
+    return elem[1]
+
 
 def edificiDins(edi1, edi2):
     # vol dir que edi1 és contingut d'edi2:
@@ -30,10 +33,11 @@ class Skyline:
     nom = "1"
     plots = []
     area = 0
+    alcada = 0
 
     def __init__(self, plot):
         self.plots = plot
-        self.calculaAreaSkyline()
+        # self.calculaAreaSkyline()
 
     def eliminaPlotsSenseVolum(self):
         length = len(self.plots)
@@ -52,6 +56,9 @@ class Skyline:
             area = amplada * x[1]
             ret = ret + area
         self.area = ret
+    
+    def calculaAlçadaMax(self):
+        self.alcada = max(self.plots, key=takeSecond)[1]
 
     def reordena(self, elem, index):
         insertat = False
@@ -216,7 +223,7 @@ class Skyline:
         pos = [((x[2]-x[0])/2)+x[0] for x in self.plots]
         plt.clf()
         plt.bar(pos, height, width=width)
-        plt.savefig("Skyline_" + self.nom)
+        plt.savefig("Skyline")
 
     def unio(self, a):
         self.plots = self.plots + a
