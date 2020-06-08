@@ -2,7 +2,7 @@ import sys
 from antlr4 import *
 from SkylineLexer import SkylineLexer
 from SkylineParser import SkylineParser
-from TreeVisitor import TreeVisitor
+from EvalVisitor import EvalVisitor
 
 
 input_stream = InputStream(input('? '))
@@ -13,5 +13,5 @@ parser = SkylineParser(token_stream)
 tree = parser.root()
 
 
-visitor = TreeVisitor()
+visitor = EvalVisitor()
 visitor.visit(tree)

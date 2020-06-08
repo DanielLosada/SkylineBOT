@@ -4,6 +4,7 @@ import sys
 sys.path.insert(1, '../')
 import skyline
 
+
 if __name__ is not None and "." in __name__:
     from .SkylineParser import SkylineParser
     from .SkylineVisitor import SkylineVisitor
@@ -12,16 +13,14 @@ else:
     from SkylineVisitor import SkylineVisitor
 
 
-class TreeVisitor(SkylineVisitor):
+class EvalVisitor(SkylineVisitor):
 
     def __init__(self):
         self.nivell = 0
 
     def visitRoot(self, ctx: SkylineParser.RootContext):
         n = next(ctx.getChildren())
-        a = self.visit(n)
-        print(a.plots)
-        return a
+        return self.visit(n)
 
     def visitExpr(self, ctx: SkylineParser.ExprContext):
         n = next(ctx.getChildren())
